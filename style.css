@@ -1,0 +1,408 @@
+@media print { html, body{ height: 297mm; width: 210mm; } }
+
+* {
+    margin: 0;
+    padding: 0;  
+}   
+
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0px 20px 0px 20px;
+}
+
+body {
+    height: 297mm; width: 210mm;
+    margin:auto;
+}
+
+.nameSurname {
+    color: black;
+    font-size: 3em;
+}
+
+.position {
+    color: #527EBE;
+    font-size: 2em;
+}
+
+.social-media {
+    display: table;
+    margin-top: 5px;
+    height: 40px;
+    font-weight:bold
+}
+
+.social-media_link {
+    padding-left: 29px;
+    color:#527EBE;
+    text-decoration: none;
+}
+
+.social-media_link:visited {
+    padding-left: 29px;
+    color:#527EBE;
+    text-decoration: none;
+} 
+
+.social-media_link:hover {
+    padding-left: 29px;
+    color:#527EBE;
+    text-decoration:underline dotted;
+}
+
+.company_link_url {
+    color:#527EBE;
+    text-decoration: none;
+    float: right;
+}
+
+.company_link_url:visited {
+    color:#527EBE;
+    text-decoration: none;
+    float: right;
+}
+
+.company_link_url:hover {
+    color:#527EBE;
+    text-decoration: underline dotted;
+    float: right;
+}
+
+.article_link {
+    color:#527EBE;
+    text-decoration: none;
+}
+
+.article_link:visited {
+    color:#527EBE;
+    text-decoration: none;
+}
+
+.article_link:hover {
+    color:#527EBE;
+    text-decoration: underline dotted;
+}
+
+.mail::before {
+    content: "";
+    position: absolute;
+    float: left;
+    margin: -4px 5px 0 0;
+    width: 24px;
+    height: 24px;
+    background-image: url("resources/icons/icons8-email-96.png");
+    background-size: 24px 24px;
+  }
+
+.mail {
+    display: table-cell;
+    width: 200px;
+    color:#527EBE;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.telegram::before {
+    content: "";
+    position: absolute;
+    float: left;
+    margin: -4px 5px 0 0;
+    width: 24px;
+    height: 24px;
+    background-image: url("resources/icons/icons8-telegram-90.png");
+    background-size: 24px 24px;
+  }
+
+.telegram {
+    display: table-cell;
+    width: 100px;
+    color:#527EBE;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.github::before {
+    content: "";
+    position: absolute;
+    float: left;
+    margin: -4px 5px 0 0;
+    width: 24px;
+    height: 24px;
+    background-image: url("resources/icons/icons8-github-96.png");
+    background-size: 24px 24px;
+  }
+
+.github {
+    display: table-cell;
+    width: 142px;
+    color:#527EBE;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.location::before {
+    content: "";
+    position: absolute;
+    float: left;
+    margin: -4px 5px 0 0;
+    width: 24px;
+    height: 24px;
+    background-image: url("resources/icons/icons8-location-96.png");
+    background-size: 24px 24px;
+  }
+
+.location {
+    display: table-cell;
+    width: 200px;
+    color:#527EBE;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.hr-line {
+	margin: 10px 0;
+	padding: 0;
+	height: 0;
+	border: none;
+	border-top: 1px solid #527EBE;
+}
+
+.hr-line-main {
+	margin: 10px auto;
+	padding: 0;
+	height: 0;
+	border: none;
+	border-top: 1px solid #527EBE;
+    width: 190mm;
+} 
+
+.hr-vertical-line {
+    margin: 10px 0;
+    padding: 0;
+	height: 0;
+	border: none;
+    border-left: thick solid #527EBE;
+}
+
+main {
+    margin-top: 10px;
+}
+
+main h2 {
+    color: #527EBE;
+    font-size: 1.5em;
+}
+
+.wrapper {
+    width: 100%; 
+    margin: auto;
+    position: relative; /* Относительное позиционирование */ 
+    font-size:0.8em;
+}
+
+.mainsec, .sidebar { position: absolute; }
+
+.mainsec {
+    width: 70%; /* Ширина колонки */
+    border-right: 1px solid #527EBE;
+}
+
+
+.sidebar {
+    width: 30%; /* Ширина колонки */
+    left: 70%; /* Сдвиг вправо */
+}
+
+.experience {
+    margin-top: 10px;
+}
+
+.job-description {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.job-position {
+    font-size: 1.4em;
+}
+
+.job-company-name {
+    margin-top:5px;
+    font-size: 1.2em;
+    color: #527EBE;
+}
+
+.work-place-additional-info {
+    display: table;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.job-time-range::before {
+    content: "";
+    position: absolute;
+    float: left;
+    margin: -4px 5px 0 0;
+    width: 24px;
+    height: 24px;
+    background-image: url("resources/icons/icons8-calendar-100.png");
+    background-size: 24px 24px;
+}
+
+.job-time-range span {
+    padding-left: 29px;
+}
+
+.job-time-range {
+    display: table-cell;
+    width: 300px;
+}
+
+/*.job-company-site a, a:visited, a:hover {
+    padding-left: 0px;
+    color:#527EBE;
+    text-decoration: none;
+    float:right;
+}*/
+
+.job-company-site {
+    display: table-cell;
+    width: 300px;
+}
+
+.job-achivment {
+    margin-top:10px;
+    list-style:disc outside;
+    padding:0 1em;
+}
+
+.achivment {
+    text-align: justify;
+    margin-top: 5px;
+    display:list-item;
+}
+
+/*.achivment a:hover {
+    padding-left: 0px;
+    color:#527EBE;
+    text-decoration: dotted;
+}
+
+.achivment a, a:visited {
+    padding-left: 0px;
+    color:#527EBE;
+    text-decoration: none;
+}*/
+
+.skills {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.skill {
+    margin-top: 15px;
+    text-align: justify;
+}
+
+.skill-tag {
+    font-weight: bolder;
+    color:#527EBE;
+    background-color: ghostwhite;
+    border: 1px solid wheat;
+    line-height: 10px;
+}
+
+.skill-description {
+    line-height: 20px;
+}
+
+.certifications {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+/*
+.cert a, a:hover, a:visited {
+    text-decoration: none;
+}*/
+
+.cert {
+    margin-top:20px;
+}
+
+.education {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.edu-depart {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.edu-depart p {
+    margin-top: 10px;
+}
+
+.regular_link:hover {
+    text-decoration: dotted;
+}
+
+.regular_link, .regular_link:visited {
+    text-decoration: none;
+}
+
+.edu-course {
+    margin-top:10px;
+    text-align: justify;
+}
+
+.edu-time-range::before {
+    content: "";
+    position: absolute;
+    float: left;
+    margin: -4px 5px 0 0;
+    width: 24px;
+    height: 24px;
+    background-image: url("resources/icons/icons8-calendar-100.png");
+    background-size: 24px 24px;
+}
+
+.edu-time-range span {
+    padding-left: 29px;
+}
+
+.edu-time-range {
+    margin-top: 20px;
+}
+
+.hobbies {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.hobbies p {
+    margin-top: 10px;
+}
+
+.petprojects {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.petproject {
+    margin-top: 15px;
+    text-align: justify;
+}
+
+.petproject-tag {
+    font-weight: bolder;
+    color:#527EBE;
+    background-color: ghostwhite;
+    border: 1px solid wheat;
+    line-height: 10px;
+}
+
+.petproject-description {
+    line-height: 20px;
+}
