@@ -15,8 +15,8 @@
       hero: {
         status: 'Открыт к senior backend / full-stack предложениям',
         eyebrow: '.NET • REST API • WPF • Интеграции',
-        headline: 'SVYATOSLAV<br />ZAKHAROV',
-        glitchText: 'SVYATOSLAV',
+        headline: 'СВЯТОСЛАВ<br />ЗАХАРОВ',
+        glitchText: 'СВЯТОСЛАВ',
         role: '.NET Developer / Integration Engineer',
         summary: 'Backend-инженер с 10+ годами коммерческого опыта в системной интеграции, автоматизации гостиничного и retail-сегмента, разработке внутренних инструментов, миграциях данных и API-сервисах на платформе .NET. Сильная база в desktop- и web-разработке, reverse engineering и production-решениях для нескольких стран.',
         actions: {
