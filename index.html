@@ -4,944 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
+  <meta name="description" content="Cyberpunk-style bilingual resume landing page for Svyatoslav Zakharov" />
   <title>Svyatoslav Zakharov — Cyberpunk Resume</title>
-  <style>
-    :root {
-      --bg: #070b14;
-      --bg-soft: rgba(12, 18, 35, 0.72);
-      --panel: rgba(14, 22, 43, 0.7);
-      --panel-strong: rgba(9, 14, 28, 0.92);
-      --text: #e8f7ff;
-      --muted: #94a8c7;
-      --cyan: #39f4ff;
-      --magenta: #ff4fd8;
-      --violet: #875dff;
-      --lime: #8bff9f;
-      --line: rgba(102, 224, 255, 0.18);
-      --line-strong: rgba(102, 224, 255, 0.42);
-      --shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 18px 60px rgba(0, 0, 0, 0.45);
-      --shadow-glow: 0 0 0 1px rgba(57, 244, 255, 0.15), 0 0 30px rgba(57, 244, 255, 0.14), 0 0 70px rgba(135, 93, 255, 0.1);
-      --radius: 24px;
-      --radius-sm: 16px;
-      --max: 1280px;
-      --header-h: 84px;
-    }
-
-    * { box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      background:
-        radial-gradient(circle at 15% 20%, rgba(57, 244, 255, 0.12), transparent 28%),
-        radial-gradient(circle at 85% 12%, rgba(255, 79, 216, 0.12), transparent 30%),
-        radial-gradient(circle at 50% 80%, rgba(135, 93, 255, 0.18), transparent 36%),
-        linear-gradient(180deg, #050811 0%, #070b14 45%, #04070e 100%);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font: inherit;
-    }
-
-    .code-rain {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      opacity: 0.16;
-      pointer-events: none;
-      mix-blend-mode: screen;
-    }
-
-    .scene {
-      position: relative;
-      isolation: isolate;
-      min-height: 100vh;
-    }
-
-    .noise,
-    .grid,
-    .blobs,
-    .scanlines {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .grid {
-      background:
-        linear-gradient(rgba(57, 244, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(57, 244, 255, 0.05) 1px, transparent 1px);
-      background-size: 32px 32px;
-      mask-image: radial-gradient(circle at center, rgba(0,0,0,0.95), rgba(0,0,0,0.3));
-      animation: gridPulse 7s ease-in-out infinite alternate;
-      transform: perspective(900px) rotateX(70deg) translateY(20vh) scale(1.7);
-      transform-origin: center center;
-      opacity: 0.35;
-    }
-
-    .scanlines {
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.02) 0,
-        rgba(255,255,255,0.02) 1px,
-        transparent 2px,
-        transparent 4px
-      );
-      opacity: 0.08;
-      mix-blend-mode: screen;
-    }
-
-    .noise {
-      background-image:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.04) 0 1px, transparent 1px),
-        radial-gradient(circle at 70% 40%, rgba(255,255,255,0.03) 0 1px, transparent 1px),
-        radial-gradient(circle at 35% 80%, rgba(255,255,255,0.03) 0 1px, transparent 1px);
-      background-size: 160px 160px;
-      opacity: 0.3;
-    }
-
-    .blobs::before,
-    .blobs::after {
-      content: "";
-      position: absolute;
-      width: 42vw;
-      height: 42vw;
-      min-width: 280px;
-      min-height: 280px;
-      filter: blur(60px);
-      opacity: 0.22;
-      border-radius: 50%;
-      animation: drift 18s ease-in-out infinite alternate;
-    }
-
-    .blobs::before {
-      top: -8vw;
-      left: -6vw;
-      background: radial-gradient(circle, rgba(57,244,255,0.9), rgba(57,244,255,0) 65%);
-    }
-
-    .blobs::after {
-      right: -10vw;
-      top: 8vh;
-      background: radial-gradient(circle, rgba(255,79,216,0.85), rgba(135,93,255,0) 70%);
-      animation-duration: 22s;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      backdrop-filter: blur(18px);
-      background: linear-gradient(180deg, rgba(4,7,14,0.9), rgba(4,7,14,0.55));
-      border-bottom: 1px solid rgba(57, 244, 255, 0.12);
-    }
-
-    .topbar-inner {
-      width: min(calc(100% - 32px), var(--max));
-      height: var(--header-h);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 46px;
-      height: 46px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(57, 244, 255, 0.3);
-      background: linear-gradient(135deg, rgba(57,244,255,0.18), rgba(255,79,216,0.14));
-      box-shadow: var(--shadow-glow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .brand-mark::before {
-      content: "SZ";
-      font-size: 0.95rem;
-      letter-spacing: 0.22em;
-      text-indent: 0.22em;
-      color: var(--text);
-    }
-
-    .brand-copy {
-      min-width: 0;
-    }
-
-    .brand-copy strong,
-    .brand-copy span {
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .brand-copy strong {
-      font-size: 0.92rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .brand-copy span {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-top: 4px;
-    }
-
-    .nav {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .nav a {
-      color: var(--muted);
-      font-size: 0.78rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      padding: 10px 12px;
-      border: 1px solid transparent;
-      transition: 180ms ease;
-    }
-
-    .nav a:hover,
-    .nav a:focus-visible {
-      color: var(--text);
-      border-color: rgba(57, 244, 255, 0.22);
-      background: rgba(57, 244, 255, 0.06);
-      outline: none;
-    }
-
-    .wrap {
-      position: relative;
-      z-index: 1;
-      width: min(calc(100% - 32px), var(--max));
-      margin: 0 auto;
-      padding: 28px 0 60px;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.85fr);
-      gap: 22px;
-      align-items: stretch;
-      margin-top: 18px;
-    }
-
-    .card,
-    .tile,
-    .timeline-item {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      background: linear-gradient(180deg, rgba(12, 19, 38, 0.78), rgba(8, 14, 28, 0.72));
-      backdrop-filter: blur(18px);
-      box-shadow: var(--shadow);
-    }
-
-    .card::before,
-    .tile::before,
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border: 1px solid transparent;
-      background:
-        linear-gradient(120deg, rgba(57,244,255,0.42), rgba(255,79,216,0.2), rgba(135,93,255,0.42)) border-box;
-      -webkit-mask:
-        linear-gradient(#fff 0 0) padding-box,
-        linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      opacity: 0.75;
-    }
-
-    .card::after,
-    .tile::after,
-    .timeline-item::after {
-      content: "";
-      position: absolute;
-      inset: auto -30% -50% auto;
-      width: 180px;
-      height: 180px;
-      background: radial-gradient(circle, rgba(57,244,255,0.18), transparent 68%);
-      pointer-events: none;
-    }
-
-    .card {
-      border-radius: var(--radius);
-      padding: 28px;
-    }
-
-    .hero-card {
-      min-height: 420px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .hero-top {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .status-chip,
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(57, 244, 255, 0.18);
-      background: rgba(57, 244, 255, 0.08);
-      color: var(--cyan);
-      font-size: 0.76rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .status-chip::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--lime);
-      box-shadow: 0 0 12px var(--lime);
-    }
-
-    .hero-headline {
-      margin: 0;
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      line-height: 0.92;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      position: relative;
-      display: inline-block;
-      text-shadow: 0 0 18px rgba(57,244,255,0.12), 0 0 38px rgba(135,93,255,0.1);
-    }
-
-    .glitch {
-      position: relative;
-    }
-
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      mix-blend-mode: screen;
-      opacity: 0.75;
-    }
-
-    .glitch::before {
-      color: rgba(57, 244, 255, 0.55);
-      transform: translate(2px, 0);
-      clip-path: polygon(0 12%, 100% 0, 100% 36%, 0 44%);
-      animation: glitchOne 3.1s infinite linear alternate-reverse;
-    }
-
-    .glitch::after {
-      color: rgba(255, 79, 216, 0.55);
-      transform: translate(-2px, 0);
-      clip-path: polygon(0 58%, 100% 50%, 100% 90%, 0 100%);
-      animation: glitchTwo 2.6s infinite linear alternate-reverse;
-    }
-
-    .hero-role {
-      margin: 16px 0 0;
-      font-size: clamp(1.05rem, 2.2vw, 1.5rem);
-      color: var(--cyan);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .summary {
-      margin-top: 24px;
-      max-width: 70ch;
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.75;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 28px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 18px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
-      color: var(--text);
-      background: rgba(255,255,255,0.03);
-    }
-
-    .btn:hover,
-    .btn:focus-visible {
-      transform: translateY(-2px);
-      border-color: rgba(57,244,255,0.3);
-      background: rgba(57,244,255,0.08);
-      outline: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, rgba(57,244,255,0.16), rgba(135,93,255,0.18));
-      box-shadow: var(--shadow-glow);
-    }
-
-    .hero-side {
-      display: grid;
-      gap: 18px;
-    }
-
-    .contact-card {
-      display: grid;
-      gap: 12px;
-      align-content: start;
-    }
-
-    .card-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .card-title h2,
-    .section-heading h2 {
-      margin: 0;
-      font-size: 0.92rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--text);
-    }
-
-    .card-title span,
-    .section-heading span {
-      color: var(--cyan);
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .contact-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .contact-item {
-      display: grid;
-      grid-template-columns: 36px minmax(0, 1fr);
-      gap: 12px;
-      align-items: start;
-      padding: 12px;
-      background: rgba(255,255,255,0.025);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 14px;
-      transition: 160ms ease;
-    }
-
-    .contact-item:hover {
-      border-color: rgba(57, 244, 255, 0.22);
-      transform: translateX(2px);
-    }
-
-    .contact-icon {
-      width: 36px;
-      height: 36px;
-      display: grid;
-      place-items: center;
-      border-radius: 10px;
-      border: 1px solid rgba(57, 244, 255, 0.16);
-      background: linear-gradient(135deg, rgba(57,244,255,0.12), rgba(255,79,216,0.08));
-      color: var(--cyan);
-      font-size: 1rem;
-    }
-
-    .contact-item small {
-      display: block;
-      color: var(--muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .contact-item strong,
-    .contact-item a {
-      font-size: 0.98rem;
-      line-height: 1.5;
-      word-break: break-word;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .stat {
-      padding: 16px;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      line-height: 1;
-      color: var(--cyan);
-      text-shadow: 0 0 16px rgba(57,244,255,0.18);
-    }
-
-    .stat span {
-      display: block;
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 0.78rem;
-      line-height: 1.5;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-      gap: 22px;
-      margin-top: 24px;
-      align-items: start;
-    }
-
-    .stack {
-      display: grid;
-      gap: 22px;
-    }
-
-    .section-card {
-      border-radius: var(--radius);
-      padding: 26px;
-    }
-
-    .section-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid rgba(57, 244, 255, 0.1);
-    }
-
-    .timeline {
-      display: grid;
-      gap: 16px;
-      position: relative;
-    }
-
-    .timeline::before {
-      content: "";
-      position: absolute;
-      left: 16px;
-      top: 8px;
-      bottom: 8px;
-      width: 1px;
-      background: linear-gradient(180deg, rgba(57,244,255,0), rgba(57,244,255,0.45), rgba(255,79,216,0.3), rgba(57,244,255,0));
-    }
-
-    .timeline-item {
-      border-radius: 22px;
-      padding: 22px 22px 22px 54px;
-      background: linear-gradient(180deg, rgba(12, 18, 34, 0.88), rgba(7, 12, 25, 0.8));
-    }
-
-    .timeline-dot {
-      position: absolute;
-      left: 10px;
-      top: 24px;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 0 4px rgba(57,244,255,0.14), 0 0 18px rgba(57,244,255,0.55);
-    }
-
-    .timeline-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 14px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .timeline-role {
-      margin: 0;
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      line-height: 1.35;
-    }
-
-    .timeline-company {
-      color: var(--cyan);
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      font-size: 0.74rem;
-    }
-
-    .tagline,
-    .timeline-date,
-    .timeline-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.035);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: var(--muted);
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .timeline-link:hover {
-      color: var(--text);
-      border-color: rgba(57,244,255,0.2);
-    }
-
-    .timeline-list {
-      margin: 14px 0 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 10px;
-    }
-
-    .timeline-list li {
-      position: relative;
-      padding-left: 18px;
-      color: #b9c7df;
-      line-height: 1.72;
-      font-size: 0.96rem;
-    }
-
-    .timeline-list li::before {
-      content: ">";
-      position: absolute;
-      left: 0;
-      top: 0;
-      color: var(--cyan);
-      text-shadow: 0 0 10px rgba(57,244,255,0.35);
-    }
-
-    .tiles {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .tile {
-      border-radius: 20px;
-      padding: 18px;
-      min-height: 100%;
-    }
-
-    .tile h3 {
-      margin: 0 0 12px;
-      font-size: 0.86rem;
-      color: var(--cyan);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .tile p,
-    .tile li,
-    .sidebar-card p,
-    .sidebar-card li {
-      margin: 0;
-      color: #b9c7df;
-      line-height: 1.7;
-      font-size: 0.95rem;
-    }
-
-    .chip-set {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .chip {
-      padding: 8px 10px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.025);
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 0.82rem;
-      line-height: 1.4;
-    }
-
-    .sidebar-stack {
-      display: grid;
-      gap: 22px;
-    }
-
-    .sidebar-card {
-      border-radius: var(--radius);
-      padding: 22px;
-    }
-
-    .sidebar-card ul,
-    .tile ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 12px;
-    }
-
-    .sidebar-card li,
-    .tile li {
-      position: relative;
-      padding-left: 16px;
-    }
-
-    .sidebar-card li::before,
-    .tile li::before {
-      content: "▸";
-      position: absolute;
-      left: 0;
-      color: var(--magenta);
-    }
-
-    .project-list {
-      display: grid;
-      gap: 14px;
-    }
-
-    .project {
-      padding: 16px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.05);
-      background: rgba(255,255,255,0.025);
-    }
-
-    .project-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .project h3 {
-      margin: 0;
-      font-size: 1rem;
-      color: var(--text);
-    }
-
-    .project a {
-      color: var(--cyan);
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-    }
-
-    .project a:hover {
-      text-shadow: 0 0 12px rgba(57,244,255,0.3);
-    }
-
-    .project p {
-      color: #b9c7df;
-      line-height: 1.72;
-      margin: 0;
-    }
-
-    .footer {
-      margin-top: 28px;
-      padding: 16px 4px 0;
-      color: rgba(148,168,199,0.78);
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(18px) scale(0.985);
-      transition: opacity 650ms ease, transform 650ms ease;
-      transition-delay: var(--delay, 0ms);
-    }
-
-    .reveal.is-visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    [data-parallax] {
-      will-change: transform;
-      transition: transform 180ms linear;
-    }
-
-    @keyframes drift {
-      from { transform: translate3d(0, 0, 0) scale(1); }
-      to { transform: translate3d(3vw, 4vh, 0) scale(1.08); }
-    }
-
-    @keyframes gridPulse {
-      from { opacity: 0.18; }
-      to { opacity: 0.36; }
-    }
-
-    @keyframes glitchOne {
-      0%, 80%, 100% { transform: translate(1px, 0); }
-      84% { transform: translate(5px, -1px); }
-      88% { transform: translate(-3px, 1px); }
-      92% { transform: translate(2px, 0); }
-    }
-
-    @keyframes glitchTwo {
-      0%, 75%, 100% { transform: translate(-1px, 0); }
-      79% { transform: translate(-4px, 1px); }
-      83% { transform: translate(3px, -1px); }
-      90% { transform: translate(-2px, 1px); }
-    }
-
-    @media (max-width: 1100px) {
-      .hero,
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-card {
-        min-height: auto;
-      }
-    }
-
-    @media (max-width: 760px) {
-      :root {
-        --header-h: auto;
-        --radius: 20px;
-      }
-
-      .topbar {
-        position: static;
-      }
-
-      .topbar-inner {
-        height: auto;
-        padding: 14px 0;
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .nav {
-        width: 100%;
-        justify-content: flex-start;
-      }
-
-      .wrap {
-        width: min(calc(100% - 20px), var(--max));
-        padding-top: 18px;
-      }
-
-      .card,
-      .section-card,
-      .sidebar-card,
-      .tile,
-      .timeline-item {
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-
-      .hero-headline {
-        font-size: clamp(2rem, 13vw, 3.5rem);
-      }
-
-      .summary {
-        font-size: 0.95rem;
-      }
-
-      .stats-grid,
-      .tiles {
-        grid-template-columns: 1fr;
-      }
-
-      .timeline-item {
-        padding-left: 46px;
-      }
-
-      .timeline::before {
-        left: 13px;
-      }
-
-      .timeline-dot {
-        left: 7px;
-      }
-
-      .footer {
-        font-size: 0.72rem;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-      }
-      .reveal {
-        opacity: 1;
-        transform: none;
-      }
-    }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
 </head>
 <body>
   <div class="scene">
@@ -953,46 +21,51 @@
 
     <header class="topbar">
       <div class="topbar-inner">
-        <div class="brand">
-          <div class="brand-mark"></div>
+        <a class="brand" href="#top" aria-label="Resume home">
+          <div class="brand-mark" aria-hidden="true"></div>
           <div class="brand-copy">
-            <strong>Svyatoslav Zakharov</strong>
-            <span>Cybernetic Portfolio / .NET Developer</span>
+            <strong id="brandName">Svyatoslav Zakharov</strong>
+            <span id="brandSubtitle">Cybernetic Portfolio / .NET Developer</span>
+          </div>
+        </a>
+
+        <div class="topbar-actions">
+          <nav class="nav" id="mainNav" aria-label="Primary navigation">
+            <a href="#experience" id="navExperience">Experience</a>
+            <a href="#stack" id="navStack">Stack</a>
+            <a href="#projects" id="navProjects">Projects</a>
+            <a href="#education" id="navEducation">Education</a>
+            <a href="#contacts" id="navContacts">Contacts</a>
+          </nav>
+
+          <div class="lang-switcher" aria-label="Language switcher">
+            <button type="button" class="lang-btn" data-lang="ru" aria-pressed="false">RU</button>
+            <button type="button" class="lang-btn is-active" data-lang="en" aria-pressed="true">EN</button>
           </div>
         </div>
-
-        <nav class="nav" aria-label="Primary">
-          <a href="#experience">Experience</a>
-          <a href="#stack">Stack</a>
-          <a href="#projects">Projects</a>
-          <a href="#education">Education</a>
-          <a href="#contacts">Contacts</a>
-        </nav>
       </div>
     </header>
 
-    <main class="wrap">
+    <main class="wrap" id="top">
       <section class="hero reveal" data-parallax data-speed="0.02">
         <article class="card hero-card">
           <div>
             <div class="hero-top">
-              <span class="status-chip">Open for senior backend / full-stack challenges</span>
-              <span class="eyebrow">.NET • REST API • WPF • Integrations</span>
+              <span class="status-chip" id="heroStatus">Open for senior backend / full-stack challenges</span>
+              <span class="eyebrow" id="heroEyebrow">.NET • REST API • WPF • Integrations</span>
             </div>
 
-            <h1 class="hero-headline glitch" data-text="SVYATOSLAV">SVYATOSLAV<br />ZAKHAROV</h1>
-            <p class="hero-role">.NET Developer / Integration Engineer</p>
+            <h1 class="hero-headline glitch" id="heroHeadline" data-text="SVYATOSLAV">SVYATOSLAV<br />ZAKHAROV</h1>
+            <p class="hero-role" id="heroRole">.NET Developer / Integration Engineer</p>
 
-            <p class="summary">
-              Backend-focused engineer with 10+ years of commercial experience designing integration-heavy systems,
-              fiscal solutions, hotel and retail automation, internal tooling, and API services. Strong background in
-              .NET ecosystem, desktop and web delivery, data migration, and production systems used across multiple countries.
+            <p class="summary" id="heroSummary">
+              Backend-focused engineer with 10+ years of commercial experience designing integration-heavy systems, fiscal solutions, hotel and retail automation, internal tooling, data migrations, and API services on the .NET platform.
             </p>
 
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#contacts">Initialize Contact</a>
-              <a class="btn" href="#experience">View Timeline</a>
-              <a class="btn" href="mailto:79035042610@ya.ru">Send Email</a>
+              <a class="btn btn-primary" href="#contacts" id="heroActionPrimary">Initialize Contact</a>
+              <a class="btn" href="#experience" id="heroActionSecondary">View Timeline</a>
+              <a class="btn" href="mailto:79035042610@ya.ru" id="heroActionEmail">Send Email</a>
             </div>
           </div>
         </article>
@@ -1000,64 +73,18 @@
         <div class="hero-side">
           <aside class="card contact-card reveal" id="contacts" style="--delay: 100ms;">
             <div class="card-title">
-              <h2>Signal Channels</h2>
-              <span>Direct Links</span>
+              <h2 id="contactsTitle">Signal Channels</h2>
+              <span id="contactsSubtitle">Direct Links</span>
             </div>
-            <div class="contact-list">
-              <a class="contact-item" href="mailto:79035042610@ya.ru">
-                <div class="contact-icon">✉</div>
-                <div>
-                  <small>Email</small>
-                  <strong>79035042610@ya.ru</strong>
-                </div>
-              </a>
-              <a class="contact-item" href="https://t.me/zs_rus" target="_blank" rel="noreferrer">
-                <div class="contact-icon">◉</div>
-                <div>
-                  <small>Telegram</small>
-                  <strong>@zs_rus</strong>
-                </div>
-              </a>
-              <a class="contact-item" href="https://github.com/szakharov91" target="_blank" rel="noreferrer">
-                <div class="contact-icon">⌘</div>
-                <div>
-                  <small>GitHub</small>
-                  <strong>github.com/szakharov91</strong>
-                </div>
-              </a>
-              <a class="contact-item" href="https://yandex.ru/maps/-/CDr~AHzx" target="_blank" rel="noreferrer">
-                <div class="contact-icon">⌖</div>
-                <div>
-                  <small>Location</small>
-                  <strong>Russia, Moscow</strong>
-                </div>
-              </a>
-            </div>
+            <div class="contact-list" id="contactsList"></div>
           </aside>
 
           <aside class="card reveal" style="--delay: 180ms;">
             <div class="card-title">
-              <h2>Quick Metrics</h2>
-              <span>Snapshot</span>
+              <h2 id="metricsTitle">Quick Metrics</h2>
+              <span id="metricsSubtitle">Snapshot</span>
             </div>
-            <div class="stats-grid">
-              <div class="stat">
-                <strong>10+</strong>
-                <span>Years in software engineering</span>
-              </div>
-              <div class="stat">
-                <strong>100+</strong>
-                <span>Hotels migrated with internal tooling</span>
-              </div>
-              <div class="stat">
-                <strong>6</strong>
-                <span>Countries using fiscal solution stack</span>
-              </div>
-              <div class="stat">
-                <strong>50+</strong>
-                <span>Restaurants connected to regulator workflow</span>
-              </div>
-            </div>
+            <div class="stats-grid" id="metricsGrid"></div>
           </aside>
         </div>
       </section>
@@ -1066,367 +93,69 @@
         <div class="stack">
           <section class="card section-card reveal" id="experience">
             <div class="section-heading">
-              <h2>Experience Timeline</h2>
-              <span>2010 — Present</span>
+              <h2 id="experienceTitle">Experience Timeline</h2>
+              <span id="experienceSubtitle">2010 — Present</span>
             </div>
-
-            <div class="timeline">
-              <article class="timeline-item reveal" style="--delay: 50ms;">
-                <span class="timeline-dot"></span>
-                <div class="timeline-meta">
-                  <span class="timeline-company">HRS Hospitality &amp; Retail Systems</span>
-                  <span class="timeline-date">Dec 2021 — Present</span>
-                  <a class="timeline-link" href="https://hrsinternational.com" target="_blank" rel="noreferrer">hrsinternational.com</a>
-                </div>
-                <h3 class="timeline-role">Fiscalization and Localization Solutions Developer</h3>
-                <ul class="timeline-list">
-                  <li>Built a hotel data migration tool for Oracle Opera v5 to Oracle Opera Cloud and got it listed in the Oracle Cloud Marketplace.</li>
-                  <li>Delivered migration projects for 100+ large hotels and improved enterprise migration throughput.</li>
-                  <li>Developed a cashier/front-office solution for fiscal devices and payment workflows used in hotel, restaurant, and retail operations across 6 countries.</li>
-                  <li>Implemented a back-office receipt unload server for automated communication with government regulators in Hungary, used by about 50 large restaurants.</li>
-                  <li>Designed and implemented a REST API layer for third-party integrations extending Oracle MICROS Simphony import/export capabilities.</li>
-                </ul>
-              </article>
-
-              <article class="timeline-item reveal" style="--delay: 100ms;">
-                <span class="timeline-dot"></span>
-                <div class="timeline-meta">
-                  <span class="timeline-company">AT Telecom LLC</span>
-                  <span class="timeline-date">Aug 2019 — Dec 2021</span>
-                  <a class="timeline-link" href="https://at-telecom.ru/" target="_blank" rel="noreferrer">at-telecom.ru</a>
-                </div>
-                <h3 class="timeline-role">Software Engineer</h3>
-                <ul class="timeline-list">
-                  <li>Developed a NETUP UTM billing integration module for network equipment and automated service provisioning for end users.</li>
-                  <li>Streamlined data exchange with accounting workflows and reduced manual operational steps.</li>
-                  <li>Expanded a transcoder control system and web interface with monitoring and device-management modules.</li>
-                  <li>Implemented a scheduler for recording video streams from cameras connected to the IPTV complex.</li>
-                </ul>
-              </article>
-
-              <article class="timeline-item reveal" style="--delay: 150ms;">
-                <span class="timeline-dot"></span>
-                <div class="timeline-meta">
-                  <span class="timeline-company">JSC THC VEGA</span>
-                  <span class="timeline-date">Apr 2014 — Aug 2019</span>
-                  <a class="timeline-link" href="https://www.hotel-vega.ru/" target="_blank" rel="noreferrer">hotel-vega.ru</a>
-                </div>
-                <h3 class="timeline-role">Software Engineer</h3>
-                <ul class="timeline-list">
-                  <li>Developed an information service displaying current events for convention center guests.</li>
-                  <li>Built and deployed an in-house billing system for Siemens HiPath4000 PBX with hotel PMS integration.</li>
-                  <li>Automated telephone service accounting and provider reporting for hospitality operations.</li>
-                  <li>Created a consumables accounting system for IT department internal needs.</li>
-                </ul>
-              </article>
-
-              <article class="timeline-item reveal" style="--delay: 200ms;">
-                <span class="timeline-dot"></span>
-                <div class="timeline-meta">
-                  <span class="timeline-company">College of Service and Tourism No. 29</span>
-                  <span class="timeline-date">Aug 2012 — Apr 2014</span>
-                  <a class="timeline-link" href="https://www.tsit29.ru/" target="_blank" rel="noreferrer">tsit29.ru</a>
-                </div>
-                <h3 class="timeline-role">Developer</h3>
-                <ul class="timeline-list">
-                  <li>Developed an interactive lesson schedule information service for students.</li>
-                </ul>
-              </article>
-
-              <article class="timeline-item reveal" style="--delay: 250ms;">
-                <span class="timeline-dot"></span>
-                <div class="timeline-meta">
-                  <span class="timeline-company">Marat-C</span>
-                  <span class="timeline-date">Mar 2010 — Aug 2012</span>
-                  <a class="timeline-link" href="https://www.marat-c.com/" target="_blank" rel="noreferrer">marat-c.com</a>
-                </div>
-                <h3 class="timeline-role">Junior Developer</h3>
-                <ul class="timeline-list">
-                  <li>Started commercial engineering track and contributed to internal development tasks and business software delivery.</li>
-                </ul>
-              </article>
-            </div>
+            <div class="timeline" id="experienceTimeline"></div>
           </section>
 
           <section class="card section-card reveal" id="stack">
             <div class="section-heading">
-              <h2>Core Stack</h2>
-              <span>Metro Tiles</span>
+              <h2 id="stackTitle">Core Stack</h2>
+              <span id="stackSubtitle">Metro Tiles</span>
             </div>
-            <div class="tiles">
-              <article class="tile">
-                <h3>Languages</h3>
-                <div class="chip-set">
-                  <span class="chip">C#</span>
-                  <span class="chip">JavaScript</span>
-                  <span class="chip">Rust</span>
-                  <span class="chip">FreePascal</span>
-                </div>
-              </article>
-
-              <article class="tile">
-                <h3>.NET Ecosystem</h3>
-                <div class="chip-set">
-                  <span class="chip">.NET Framework</span>
-                  <span class="chip">.NET 8</span>
-                  <span class="chip">Kestrel</span>
-                  <span class="chip">MudBlazor</span>
-                  <span class="chip">REST API</span>
-                  <span class="chip">WPF MVVM</span>
-                </div>
-              </article>
-
-              <article class="tile">
-                <h3>Frameworks &amp; Tooling</h3>
-                <div class="chip-set">
-                  <span class="chip">Caliburn.Micro</span>
-                  <span class="chip">AutoMapper</span>
-                  <span class="chip">TopShelf</span>
-                  <span class="chip">SonarAnalyzer.CSharp</span>
-                  <span class="chip">Microsoft DI</span>
-                  <span class="chip">Ninject</span>
-                  <span class="chip">Autofac</span>
-                </div>
-              </article>
-
-              <article class="tile">
-                <h3>Data Layer</h3>
-                <div class="chip-set">
-                  <span class="chip">NHibernate</span>
-                  <span class="chip">Entity Framework</span>
-                  <span class="chip">SQLite</span>
-                  <span class="chip">MySQL</span>
-                  <span class="chip">PostgreSQL</span>
-                  <span class="chip">Oracle</span>
-                </div>
-              </article>
-
-              <article class="tile">
-                <h3>Reverse Engineering</h3>
-                <div class="chip-set">
-                  <span class="chip">dnSpy</span>
-                  <span class="chip">dotPeek</span>
-                  <span class="chip">dot4net</span>
-                </div>
-              </article>
-
-              <article class="tile">
-                <h3>Focus Areas</h3>
-                <ul>
-                  <li>Data migration and integration-heavy systems</li>
-                  <li>Fiscal devices and payment workflows</li>
-                  <li>Back-office services and automation</li>
-                  <li>Desktop + web enterprise products</li>
-                </ul>
-              </article>
-            </div>
+            <div class="tiles" id="stackTiles"></div>
           </section>
 
           <section class="card section-card reveal" id="projects">
             <div class="section-heading">
-              <h2>Pet Projects</h2>
-              <span>Open Source</span>
+              <h2 id="projectsTitle">Pet Projects</h2>
+              <span id="projectsSubtitle">Open Source</span>
             </div>
-            <div class="project-list">
-              <article class="project">
-                <div class="project-top">
-                  <h3>Shortly.NET</h3>
-                  <a href="https://github.com/szakharov91/Shortly.NET" target="_blank" rel="noreferrer">Repository ↗</a>
-                </div>
-                <p>Minimal URL utility for .NET 8 with support for creating short links and redirects.</p>
-              </article>
-
-              <article class="project">
-                <div class="project-top">
-                  <h3>GoogleTranslateHelper</h3>
-                  <a href="https://github.com/szakharov91/GoogleTranslateHelper" target="_blank" rel="noreferrer">Repository ↗</a>
-                </div>
-                <p>Library for fast online translations and lightweight integration scenarios.</p>
-              </article>
-
-              <article class="project">
-                <div class="project-top">
-                  <h3>Gpio-monitoring-service</h3>
-                  <a href="https://github.com/szakharov91/Gpio-monitoring-service" target="_blank" rel="noreferrer">Repository ↗</a>
-                </div>
-                <p>Service for monitoring GPIO interfaces of Raspberry Pi 4 and integrating sensor data with smart home systems.</p>
-              </article>
-            </div>
+            <div class="project-list" id="projectsList"></div>
           </section>
         </div>
 
         <aside class="sidebar-stack">
           <section class="card sidebar-card reveal">
             <div class="section-heading">
-              <h2>Certifications</h2>
-              <span>Verified</span>
+              <h2 id="certificationsTitle">Certifications</h2>
+              <span id="certificationsSubtitle">Verified</span>
             </div>
-            <ul>
-              <li><a href="https://freecodecamp.org/certification/szakharov/foundational-c-sharp-with-microsoft" target="_blank" rel="noreferrer">Foundational C# with Microsoft Certification</a></li>
-              <li><a href="https://learn.microsoft.com/en-us/users/72165185/credentials/3150eb2a497c0020" target="_blank" rel="noreferrer">Develop an ASP.NET Core web app that consumes an API</a></li>
-            </ul>
+            <ul id="certificationsList"></ul>
           </section>
 
           <section class="card sidebar-card reveal" id="education" style="--delay: 80ms;">
             <div class="section-heading">
-              <h2>Education</h2>
-              <span>Foundation</span>
+              <h2 id="educationTitle">Education</h2>
+              <span id="educationSubtitle">Foundation</span>
             </div>
-            <p><strong>College of Automation and Information Technologies 20</strong></p>
-            <p style="margin-top: 12px; color: var(--muted);">
-              Course: <span style="color: var(--text);">Automated information processing and management systems</span>
-            </p>
-            <p style="margin-top: 12px; color: var(--muted);">September 2006 — July 2010</p>
-            <p style="margin-top: 14px;"><a href="https://kait20.mskobr.ru/" target="_blank" rel="noreferrer" style="color: var(--cyan);">kait20.mskobr.ru ↗</a></p>
+            <div id="educationBlock"></div>
           </section>
 
           <section class="card sidebar-card reveal" style="--delay: 120ms;">
             <div class="section-heading">
-              <h2>Profile</h2>
-              <span>Signals</span>
+              <h2 id="profileTitle">Profile</h2>
+              <span id="profileSubtitle">Signals</span>
             </div>
-            <ul>
-              <li>Designs and ships production-grade business tools.</li>
-              <li>Comfortable with legacy modernization and reverse engineering.</li>
-              <li>Experienced in enterprise integrations and domain-specific automation.</li>
-              <li>Strong fit for backend, platform, and full-stack product teams.</li>
-            </ul>
+            <ul id="profileList"></ul>
           </section>
 
           <section class="card sidebar-card reveal" style="--delay: 160ms;">
             <div class="section-heading">
-              <h2>Interests</h2>
-              <span>Off Duty</span>
+              <h2 id="interestsTitle">Interests</h2>
+              <span id="interestsSubtitle">Off Duty</span>
             </div>
-            <ul>
-              <li>Songwriting</li>
-              <li>Playing guitar and piano</li>
-              <li>Cars and autosport</li>
-            </ul>
+            <ul id="interestsList"></ul>
           </section>
         </aside>
       </section>
 
       <footer class="footer reveal">
-        <span>Resume landing page / single-file build</span>
-        <span>Cyberpunk × Matrix × Metro UI</span>
+        <span id="footerLeft">Resume landing page / multi-file build</span>
+        <span id="footerRight">Cyberpunk × Matrix × Metro UI</span>
       </footer>
     </main>
   </div>
-
-  <script>
-    (() => {
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      const revealItems = document.querySelectorAll('.reveal');
-      if (!prefersReduced && 'IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.14 });
-
-        revealItems.forEach((el) => observer.observe(el));
-      } else {
-        revealItems.forEach((el) => el.classList.add('is-visible'));
-      }
-
-      const parallaxItems = [...document.querySelectorAll('[data-parallax]')];
-      if (!prefersReduced && parallaxItems.length) {
-        let pointerX = 0;
-        let pointerY = 0;
-        let rafId = null;
-
-        const renderParallax = () => {
-          parallaxItems.forEach((item) => {
-            const speed = parseFloat(item.dataset.speed || '0.02');
-            const x = pointerX * speed;
-            const y = pointerY * speed;
-            item.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-          });
-          rafId = null;
-        };
-
-        window.addEventListener('pointermove', (event) => {
-          const nx = event.clientX / window.innerWidth - 0.5;
-          const ny = event.clientY / window.innerHeight - 0.5;
-          pointerX = nx * 18;
-          pointerY = ny * 18;
-          if (!rafId) rafId = requestAnimationFrame(renderParallax);
-        }, { passive: true });
-      }
-
-      const canvas = document.getElementById('codeRain');
-      const ctx = canvas.getContext('2d');
-      const glyphs = 'アカサタナハマヤャラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ{}[]<>$#@&%+=/*-;:.NET';
-      let columns = [];
-      let fontSize = 15;
-      let width = 0;
-      let height = 0;
-      let animationId = 0;
-
-      function resizeCanvas() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = Math.floor(width * dpr);
-        canvas.height = Math.floor(height * dpr);
-        canvas.style.width = `${width}px`;
-        canvas.style.height = `${height}px`;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        fontSize = width < 640 ? 12 : 15;
-        const count = Math.ceil(width / fontSize);
-        columns = Array.from({ length: count }, () => Math.random() * -60);
-      }
-
-      function drawRain() {
-        ctx.fillStyle = 'rgba(4, 7, 14, 0.12)';
-        ctx.fillRect(0, 0, width, height);
-        ctx.font = `${fontSize}px ui-monospace, monospace`;
-
-        for (let i = 0; i < columns.length; i += 1) {
-          const char = glyphs[Math.floor(Math.random() * glyphs.length)];
-          const x = i * fontSize;
-          const y = columns[i] * fontSize;
-
-          ctx.fillStyle = i % 11 === 0 ? 'rgba(255, 79, 216, 0.75)' : 'rgba(57, 244, 255, 0.78)';
-          ctx.fillText(char, x, y);
-
-          if (y > height + Math.random() * 200 && Math.random() > 0.985) {
-            columns[i] = Math.random() * -20;
-          } else {
-            columns[i] += width < 640 ? 0.42 : 0.58;
-          }
-        }
-
-        animationId = requestAnimationFrame(drawRain);
-      }
-
-      function startRain() {
-        resizeCanvas();
-        if (!prefersReduced) {
-          cancelAnimationFrame(animationId);
-          ctx.fillStyle = '#04070e';
-          ctx.fillRect(0, 0, width, height);
-          drawRain();
-        } else {
-          ctx.clearRect(0, 0, width, height);
-        }
-      }
-
-      startRain();
-      window.addEventListener('resize', resizeCanvas, { passive: true });
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          cancelAnimationFrame(animationId);
-        } else if (!prefersReduced) {
-          drawRain();
-        }
-      });
-    })();
-  </script>
 </body>
 </html>
